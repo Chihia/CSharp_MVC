@@ -1,0 +1,25 @@
+﻿@model MvcAppTry.Models.Form1Data
+
+@{
+    ViewBag.Title = "SentFormData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SentFormData</h2>
+<section id="dataform">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        
+        <fieldset>
+            <legend>資料表單</legend>
+            <div>
+                @Html.LabelFor(formdata => formdata.FormTitle)
+                @Html.TextBoxFor(formdata => formdata.FormTitle)
+                @Html.ValidationMessageFor(formdata => formdata.FormTitle)
+            </div>
+
+            <input type="submit" value="PostData" />
+        </fieldset>        
+    }
+</section>
