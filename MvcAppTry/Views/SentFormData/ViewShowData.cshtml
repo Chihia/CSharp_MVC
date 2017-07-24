@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MvcAppTry.Models.Form1Data>
+
+@{
+    ViewBag.Title = "ViewShowData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewShowData</h2>
+<div>
+        @Html.ActionLink("Create New", "SentFormData", "SentFormData")
+    
+    <table class="table table-striped">
+
+        <tr>
+            <td>@Html.DisplayNameFor(model => model.ID)</td>
+            <td>@Html.DisplayNameFor(model => model.Title)</td>
+            <td>@Html.DisplayNameFor(model => model.Create_Time)</td>
+            <td>操作</td>
+        </tr>
+        @foreach (var dr in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => dr.ID)</td>
+                <td>@Html.DisplayFor(modelItem => dr.Title)</td>
+                <td>@Html.DisplayFor(modelItem => dr.Create_Time)</td>
+                <td>
+                @Html.ActionLink("編輯", "ViewEditData", new { id = dr.ID })
+                @Html.ActionLink("刪除", "DeleteFormData", new { id = dr.ID }, new { onclick = "return confirm(\"確定要刪除此筆資料? \");" })</td>
+            </tr>
+        }
+    </table>
+
+</div>

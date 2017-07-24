@@ -1,15 +1,15 @@
 ﻿@model MvcAppTry.Models.Form1Data
 
 @{
-    ViewBag.Title = "SentFormData";
+    ViewBag.Title = "ViewEditData";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>SentFormData</h2>
+<h2>ViewEditData</h2>
 <section id="dataform">
-    @using (Html.BeginForm("SentFormData", "SentFormData", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("ViewEditData", "SentFormData", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
     {
-        @Html.ValidationSummary(true)
+        @Html.ValidationSummary(true);
         
         <fieldset>
             <legend>資料表單</legend>
@@ -23,6 +23,6 @@
                 <input type="file" name="files" id="files" class="form-control" />
             </div>
             <input type="submit" value="PostData" class="btn btn-default" />
-        </fieldset>        
+        </fieldset>
     }
 </section>
