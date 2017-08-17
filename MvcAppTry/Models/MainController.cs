@@ -50,4 +50,10 @@ namespace MvcAppTry.Models
 
         
     }
+
+    public class AjaxApiResult
+    {
+        public string status { get; set; }
+        public string msg { get; set; }
+    }
 }

@@ -1,0 +1,93 @@
+﻿@model MvcAppTry.Models.Form1Data
+
+@{
+    ViewBag.Title = "SentForm2Data";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SentForm2Data</h2>
+<section id="dataform">
+    @using (Html.BeginForm("SentForm2Data", "SentFormData", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        
+        <fieldset>
+            <legend>資料表單</legend>
+            <div class="form-group">
+                @Html.LabelFor(formdata => formdata.Title)
+                @Html.TextBoxFor(formdata => formdata.Title, new { @class = "form-control"})
+                @Html.ValidationMessageFor(formdata => formdata.Title)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(formdata => formdata.File_Info)
+                <br/>
+                <div class="fileupload-buttonbar">
+                    <div class="btn btn-success fileinput-button">
+                        <span>選擇檔案</span>
+                        <input type="file" name="files" id="files" class="form-control" />
+                        @Html.HiddenFor(formdata => formdata.File_Info);
+                    </div>
+                    <div class="btn btn-info fileinput-button" id="btnFileuplaod">
+                        <span>上傳檔案</span>
+                    </div>
+                    <div id="dvFilename">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-5" id="dv_upload_progress_bar" style="height:20px;">
+                    <div id="dv_upload_progress" style="background-color:#0094ff; height:20px; width:0px">
+                        <div id="dv_upload_progress_txt" style="color:#ffffff; text-align:center;"></div>
+                    </div>                    
+                </div>
+            </div>
+            <input type="submit" value="PostData" class="btn btn-default" />
+        </fieldset>
+    }
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            init_fileupload();
+        });
+
+        function init_fileupload() {
+            $('#files').fileupload({
+                datatype: 'json',
+                url: '@Url.Action("AjaxFileUpload", "SentFormData")',
+                add: function (e, data) {
+                    $('#dvFilename').show();
+                    $('#dvFilename > p').html(data.files[0].name);
+                    $('#dv_upload_progress').css('width', '0%');
+                    $('#dv_upload_progress_txt').html('');
+                    $('#btnFileuplaod').off('click').on('click', function () {
+                        data.submit();
+                    });
+                },
+                progressall: function (e, data) {
+                    var calProgress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#dv_upload_progress').css('width', calProgress + '%');
+                    $('#dv_upload_progress_txt').html(calProgress + '%');
+                },
+                done: function (e, data) {
+                    console.log('done', data);
+                    //setTimeout('location.reload()', 500);
+                },
+                success: function (response, status) {
+                    $('#dv_upload_progress').css('width', '100%');
+                    $('#dv_upload_progress_txt').html('100%');
+                    console.log('success', response);
+                    $('input[name=File_Info]').val(response.msg);
+                },
+                error: function (error) {
+                    console.log('error', error);
+                    $('#dv_upload_progress').css('width', '0%');
+                    $('#dv_upload_progress_txt').html('');
+                    alert("檔案上傳失敗");
+                }
+            });
+        }
+    </script>
+}

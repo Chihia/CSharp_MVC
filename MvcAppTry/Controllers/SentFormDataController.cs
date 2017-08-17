@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using WebMatrix.WebData;
 using Dapper;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace MvcAppTry.Controllers
 {
@@ -14,7 +15,7 @@ namespace MvcAppTry.Controllers
     {
         //
         // GET: /SentFormData/
-
+        
         /*
         public ActionResult Index()
         {
@@ -27,7 +28,6 @@ namespace MvcAppTry.Controllers
         /// <returns></returns>
         public ActionResult SentFormData()
         {
-            
             return View();
         }
 
@@ -49,6 +49,10 @@ namespace MvcAppTry.Controllers
                         if (files.ContentLength > 0)
                         {
                             model.File_Info = FilesController.GetFilesInfo(files);
+                            if (model.File_Info != string.Empty)
+                            {
+                                FilesController.ToSaveFile(files);
+                            }
                         }
                     }
                     bool result = Form1Data.ToInsForm1Data(model);
@@ -70,6 +74,37 @@ namespace MvcAppTry.Controllers
             return View(model);
         }
 
+        public ActionResult SentForm2Data()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SentForm2Data(Form1Data model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    bool result = Form1Data.ToInsForm1Data(model);
+                    if (result)
+                    {
+                        return RedirectToAction("ViewShowData");
+                    }
+                    else
+                    {
+                        return View();
+                    }
+                }
+                catch (Exception err)
+                {
+                    ViewBag.ErrMsg = err.Message;
+                    return View();
+                }
+            }
+            return View(model);
+        }
+
         /// <summary>
         /// 呈現列表
         /// </summary>
@@ -83,7 +118,8 @@ namespace MvcAppTry.Controllers
             }
             catch (Exception err)
             {
-                return View(err.Message);
+                ViewBag.ErrMsg = err.Message;
+                return View();
             }
         }
 
@@ -101,7 +137,8 @@ namespace MvcAppTry.Controllers
             }
             catch (Exception err)
             {
-                return View(err.Message);
+                ViewBag.ErrMsg = err.Message;
+                return View();
             }
         }
 
@@ -128,7 +165,8 @@ namespace MvcAppTry.Controllers
                 }
                 catch (Exception err)
                 {
-                    return View(err.Message);
+                    ViewBag.ErrMsg = err.Message;
+                    return View();
                 }
             }
             return View(model);
@@ -158,6 +196,31 @@ namespace MvcAppTry.Controllers
                 return View(err.Message);
             }
             return RedirectToAction("ViewShowData");
+        }
+
+        [HttpPost]
+        public virtual ActionResult AjaxFileUpload(HttpPostedFileBase files)
+        {
+            AjaxApiResult apiresult = new AjaxApiResult();
+            apiresult.status = "0";
+            apiresult.msg = string.Empty;
+            try
+            {
+                if (files != null)
+                {
+                    if (files.ContentLength > 0)
+                    {
+                        FilesController fileCon =  FilesController.ToSaveFile(files);
+                        apiresult.status = "1";
+                        apiresult.msg = JsonConvert.SerializeObject(fileCon);
+                    }
+                }
+            }
+            catch (Exception err)
+            {
+                apiresult.msg = string.Format("上傳失敗: {0}", err.Message);
+            }
+            return Json(apiresult, "application/json");
         }
     }
 }

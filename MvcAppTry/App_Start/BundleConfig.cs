@@ -38,6 +38,19 @@ namespace MvcAppTry
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jquery-fileupload").Include(
+                "~/Scripts/plugins/jquery-fileupload/js/jquery.fileupload.js",
+                "~/Scripts/plugins/jquery-fileupload/js/jquery.fileupload-ui.js",
+                "~/Scripts/plugins/jquery-fileupload/js/vendor/jquery.ui.widget.js",
+                "~/Scripts/plugins/jquery-fileupload/js/jquery.fileupload-process.js",
+                "~/Scripts/plugins/jquery-fileupload/js/jquery.fileupload-image.js",
+                "~/Scripts/plugins/jquery-fileupload/js/jquery.fileupload-audio.js",
+                "~/Scripts/plugins/jquery-fileupload/js/jquery.fileupload-video.js"));
+
+            bundles.Add(new StyleBundle("~/Content/jquery-fileupload/css").Include(
+                "~/Scripts/plugins/jquery-fileupload/css/jquery.fileupload.css",
+                "~/Scripts/plugins/jquery-fileupload/css/jquery.fileupload-ui.css"));
         }
     }
 }

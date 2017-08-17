@@ -7,10 +7,11 @@
 
 <h2>ViewShowData</h2>
 <div>
+    <p>@ViewBag.ErrMsg</p>
         @Html.ActionLink("Create New", "SentFormData", "SentFormData")
-    
-    <table class="table table-striped">
+        @Html.ActionLink("Create New 2", "SentForm2Data", "SentFormData")
 
+    <table class="table table-striped">
         <tr>
             <td>@Html.DisplayNameFor(model => model.ID)</td>
             <td>@Html.DisplayNameFor(model => model.Title)</td>
